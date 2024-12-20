@@ -293,22 +293,14 @@ def main():
                                 lab_real = torch.ones((img_real.shape[0],), device=args.device, dtype=torch.long) * c
                                 atk = torchattacks.PGD(net, eps=8/255, alpha=2/225, steps=10, random_start=True)
                                 atk.set_mode_targeted_by_label(quiet=True)
-                                # img_syn_atk = atk(img_syn, (lab_syn+1)%10)
-                                # logits_syn_atk = net(img_syn_atk)
                                 img_real_atk = atk(img_real, (lab_real+1)%10)
                                 output_real = embed(img_real_atk, last=args.embed_last).detach()
                                 output_syn = embed(img_syn, last=args.embed_last)
                                 mean_output_real = output_real.mean(dim=0)
                                 mean_output_syn = output_syn.mean(dim=0)
-                                prob_real =F.softmax(mean_output_real,dim=-1)
-                                prob_syn  =F.softmax(mean_output_syn,dim=-1)
                                 tv = total_variation_2(output_syn,output_real)
-                                # clip_r = clip_function(prob_syn,prob_real)
-                                # prob_s_given_x = negative_log_likelihood(output_syn,output_real)
-                                # loss_c += prob_s_given_x
                                 alpha = 0.2
                                 loss_c += alpha*tv
-                                # loss_c += 0.2*clip_r
                                 logits_syn = net(img_syn)
                                 metrics[image_sign] += F.cross_entropy(logits_syn, lab_syn.repeat(args.aug_num)).detach().item()
                                 acc_avg[image_sign].add(logits_syn.detach(), lab_syn.repeat(args.aug_num))

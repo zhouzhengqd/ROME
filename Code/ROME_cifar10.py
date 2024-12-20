@@ -203,7 +203,7 @@ def main():
                         accs_all_exps[model_eval] += accs
 
                     # save the checkpoint of synthetic set with best performance\
-                    checkpoint_dir = './checkpoints/ROME_0_2_alpha_{}_ipc_{}_aug_{}_model_{}/'.format(args.dataset, args.ipc, args.aug, model_eval)
+                    checkpoint_dir = './checkpoints/ROME_{}_ipc_{}_aug_{}_model_{}/'.format(args.dataset, args.ipc, args.aug, model_eval)
                     if not os.path.exists(checkpoint_dir):
                         os.mkdir(checkpoint_dir)
                     best_synset_filename = checkpoint_dir + 'acc_{}.pkl'.format(np.mean(accs))
@@ -214,7 +214,7 @@ def main():
                             print("Saving best synset with accuracy: {}".format(np.mean(accs)))
 
                 ''' visualize and save '''
-                save_name = os.path.join(args.save_path, 'ROME_0_2_alpha_vis_%s_%s_%s_%dipc_exp%d_iter%d.png'%(args.method, args.dataset, args.model, args.ipc, exp, it))
+                save_name = os.path.join(args.save_path, 'ROME_vis_%s_%s_%s_%dipc_exp%d_iter%d.png'%(args.method, args.dataset, args.model, args.ipc, exp, it))
                 image_syn_vis = copy.deepcopy(image_syn.detach().cpu())
                 for ch in range(channel):
                     image_syn_vis[:, ch] = image_syn_vis[:, ch]  * std[ch] + mean[ch]
@@ -310,35 +310,18 @@ def main():
                                 lab_real = torch.ones((img_real.shape[0],), device=args.device, dtype=torch.long) * c
                                 atk = torchattacks.PGD(net, eps=8/255, alpha=2/225, steps=10, random_start=True)
                                 atk.set_mode_targeted_by_label(quiet=True)
-                                # img_syn_atk = atk(img_syn, (lab_syn+1)%10)
-                                # logits_syn_atk = net(img_syn_atk)
                                 img_real_atk = atk(img_real, (lab_real+1)%10)
 
                                 output_real = embed(img_real_atk, last=args.embed_last).detach()
-                                # output_real = embed(img_real, last=args.embed_last).detach()
                                 output_syn = embed(img_syn, last=args.embed_last)
                                 mean_output_real = output_real.mean(dim=0)
                                 mean_output_syn = output_syn.mean(dim=0)
-                                prob_real =F.softmax(mean_output_real,dim=-1)
-                                prob_syn  =F.softmax(mean_output_syn,dim=-1)
                                 tv = total_variation_2(output_syn,output_real)
-                                # clip_r = clip_function(prob_syn,prob_real)
-                                # # prob_s_given_x = negative_log_likelihood(output_syn,output_real)
-                                # # loss_c += prob_s_given_x
                                 alpha = 0.2
                                 loss_c += alpha*tv
-                                # loss_c += tv
-                                # loss_c += (1-alpha)*clip_r
-
-                                # loss_c += torch.sum((torch.mean(output_real, dim=0) - torch.mean(output_syn, dim=0))**2)
                                 logits_syn = net(img_syn)
                                 metrics[image_sign] += F.cross_entropy(logits_syn, lab_syn.repeat(args.aug_num)).detach().item()
                                 acc_avg[image_sign].add(logits_syn.detach(), lab_syn.repeat(args.aug_num))
-
-                                # atk = torchattacks.PGD(net, eps=8/255, alpha=2/225, steps=10, random_start=True)
-                                # atk.set_mode_targeted_by_label(quiet=True)
-                                # img_syn_atk = atk(img_syn, (lab_syn+1)%10)
-                                # logits_syn_atk = net(img_syn_atk)
 
                                 syn_ce_loss = 0
                                 gamma = 0
@@ -347,10 +330,8 @@ def main():
                                     if args.ipc == 1 and not args.aug:
                                         if logits_syn.argmax() != c:
                                             syn_ce_loss += (1-alpha)*(F.cross_entropy(logits_syn, lab_syn.repeat(args.aug_num)) * weight_i)
-                                            # syn_ce_loss += gamma*(F.cross_entropy(logits_syn_atk, lab_syn.repeat(args.aug_num)) * weight_i)
                                     else:
                                         syn_ce_loss += (1-alpha)*(F.cross_entropy(logits_syn, lab_syn.repeat(args.aug_num)) * weight_i)
-                                        # syn_ce_loss += gamma*(F.cross_entropy(logits_syn_atk, lab_syn.repeat(args.aug_num)) * weight_i)
 
                                     loss_c += (syn_ce_loss * args.ce_weight)
 
@@ -397,7 +378,7 @@ def main():
 
             if it == args.Iteration: # only record the final results
                 data_save.append([copy.deepcopy(image_syn.detach().cpu()), copy.deepcopy(label_syn.detach().cpu())])
-                torch.save({'data': data_save, 'accs_all_exps': accs_all_exps, }, os.path.join(args.save_path, 'ROME_0_2_alpha_res_%s_%s_%s_%dipc.pt'%(args.method, args.dataset, args.model, args.ipc)))
+                torch.save({'data': data_save, 'accs_all_exps': accs_all_exps, }, os.path.join(args.save_path, 'ROME_res_%s_%s_%s_%dipc.pt'%(args.method, args.dataset, args.model, args.ipc)))
 
 
     print('\n==================== Final Results ====================\n')
