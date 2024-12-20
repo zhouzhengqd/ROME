@@ -31,9 +31,15 @@ This repository contains the code and implementation details for the research pa
 - **Evaluation and Validations**: Introduces I-RR and achieves up to 40% and 35% robustness gains under white-box and black-box attacks on CIFAR datasets.
 
 ### 📈 Experimental Results
-We evaluate and compare the adversarial robustness of ROME and other dataset distillation (DD) methods against both white-box and black-box attacks, under both targeted and untargeted settings:
+We evaluate and compare the adversarial robustness of ROME and other DD methods against both white-box and black-box attacks, under both targeted and untargeted settings:
+
+
 <p align="center">
-  <img src="Fig/result.png" width="100%" class="center" alt="Result"/>
+  <img src="Fig/result_white_box.png" width="100%" class="center" alt="Result"/><figcaption><strong>Table 1:</strong> Comparison of adversarial robustness for mdoels trained on diverse DD methods under white-box attacks.</figcaption>
+</p>
+
+<p align="center">
+  <img src="Fig/result_black_box.png" width="100%" class="center" alt="Result"/><figcaption><strong>Figure 3:</strong> Comparison of adversarial robustness for mdoels trained on diverse DD methods under black-box attacks.</figcaption>
 </p>
 
 ## 🛠 Getting Started
@@ -67,7 +73,7 @@ Follow these steps to set up the environment and run the code.
         - ...
         - ...
         - ...
-## Command for Reproducing Experiment Results and Evaluation
+## 🌟 Command for Reproducing Experiment Results and Evaluation
 ### Training the Distilled Datasets 
 Follow the training command in the `command.txt`. For example, to train ROME on CIFAR-10 with IPC-50, run the following command:
   ```
@@ -82,3 +88,16 @@ Follow the BEARD benchmark configuration:
 ## 🙏 Acknowledgments
 
 We would like to thank the contributors of the following projects that inspired and supported this work: [DC, DSA, DM](https://github.com/VICO-UoE/DatasetCondensation), [MTT](https://github.com/GeorgeCazenavette/mtt-distillation), [IDM](https://github.com/uitrbn/IDM), [BACON](https://github.com/zhouzhengqd/BACON), and [BEARD](https://github.com/zhouzhengqd/BEARD).
+
+<!-- ## Citation
+```
+@article{zhou2024rome,
+  title={ROME is Forged in Adversity: Robust Distilled Datasets via Information Bottleneck},
+  author={},
+  journal={},
+  year={2024}
+}
+```
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=zhouzhengqd/ROME.git&type=Date)](https://star-history.com/#zhouzhengqd/ROME.git&Date) -->
