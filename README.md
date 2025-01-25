@@ -10,18 +10,17 @@ This repository contains the code and implementation details for the research pa
 
 <p align="center">
   <img src="Fig/overview.png" width="100%" alt="Overview" />
-  <figcaption><strong>Figure 1:</strong> Comparison of previous Dataset Distillation (DD) methods and ROME under adversarial attacks.  
-  (a) Traditional DD methods align gradients and distributions between original and synthetic datasets but remain vulnerable to adversarial attacks, leading to low test accuracy.  
-  (b) ROME leverages the Information Bottleneck (IB) principle to enhance adversarial robustness, maintaining high test accuracy even under perturbations.</figcaption>
+  <figcaption><strong>Figure 1:</strong> 
+  Comparison of previous DD methods and ROME under adversarial attacks: (a) Previous DD methods align representations between original and synthetic datasets but remain vulnerable to adversarial attacks due to their neglect of the mutual information among input $\mathcal{X}$, latent $\mathcal{Z}$, and output $\mathcal{Y}$, leading to reduced accuracy under perturbations. 
+  (b) Our proposed method, ROME, employs the information bottleneck principle to minimize mutual information between $\mathcal{X}$ and $\mathcal{Z}$, while maximizing it between $\mathcal{Y}$ and $\mathcal{Z}$, thereby enhancing adversarial robustness and preserving high accuracy under perturbations.</figcaption>
 </p>
 
-
-> **Abstract:** Dataset Distillation (DD) compresses large datasets into smaller, synthetic subsets, achieving performance similar to full datasets. However, models trained on distilled datasets remain vulnerable to adversarial attacks, limiting their use in safety-critical areas. While adversarial robustness has been widely studied in other fields, research on improving DD robustness is still limited. To address this, we propose <u>**ROME**</u>, a method that enhances the adversarial <u>**RO**</u>bustness of DD by leveraging the Infor<u>**M**</u>ation Bottlen<u>**E**</u>ck (IB) principle. ROME includes two components: a *performance-aligned term* for accuracy and a *robustness-aligned term* to improve resilience by aligning feature distributions between synthetic and perturbed images. We also introduce the Improved Robustness Ratio (I-RR) as a better metric for DD robustness. Extensive experiments on CIFAR-10 and CIFAR-100 datasets show that ROME outperforms existing DD methods in adversarial robustness, achieving up to a 40% improvement in I-RR under white-box attacks and up to 35% under black-box attacks on CIFAR-10.
+> **Abstract:**  Dataset Distillation (DD) compresses large datasets into smaller, synthetic subsets, enabling models trained on them to achieve performance comparable to those trained on the full data. However, these models remain vulnerable to adversarial attacks, limiting their use in safety-critical applications. While adversarial robustness has been widely studied in other fields, research on improving DD robustness is still limited.  To address this, we propose <u>**ROME**</u>, a method that enhances the adversarial <u>**RO**</u>bustness of DD by leveraging the Infor<u>**M**</u>ation Bottlen<u>**E**</u>ck (IB) principle. ROME includes two components: a performance-aligned term for accuracy and a robustness-aligned term to improve resilience by aligning feature distributions between synthetic and perturbed images. We also introduce the Improved Robustness Ratio (I-RR) as a better metric for DD robustness. Extensive experiments on CIFAR-10 and CIFAR-100 datasets show that ROME outperforms existing DD methods in adversarial robustness, achieving up to a 40% improvement in I-RR under white-box attacks and up to 35% under black-box attacks on CIFAR-10.
 >
 ### 🔥 Key Features and Contributions
 <p align="center">
   <img src="Fig/method.png" width="100%" class="center" alt="Method"/>
-  <figcaption><strong>Figure 2:</strong> The ROME framework: ROME utilizes Information Bottleneck (IB) to frame the robust dataset distillation problem as a min-max optimization of mutual information. It consists of two key components: (a) The performance-aligned term aims to maximize the separation between latent space information and the neural network's output by aligning the distribution of logits with true labels. (b) The robustness-aligned term minimizes the discrepancy between latent space information and the network's input, using a robust prior, which is a perturbed version of the source dataset under adversarial attacks. By aligning the embedding layers, ROME generates a robust distilled dataset that performs well against adversarial attacks.</figcaption>
+  <figcaption><strong>Figure 2:</strong> The framework of ROME: ROME utilizes the information bottleneck to frame the robust dataset distillation problem as a min-max optimization of mutual information. It consists of two key components: (a) The performance-aligned term maximizes the mutual information between the latent space $\mathcal{Z}$ and the output $\mathcal{Y}$ by aligning the logits with the true labels. (b) The robustness-aligned term minimizes the mutual information between $\mathcal{Z}$ and the input $\mathcal{X}$, conditioned on a robust prior $\hat{\mathcal{X}}$ (the adversarially perturbed dataset), by aligning the embeddings to reduce the discrepancy.</figcaption>
 </p>
 
 - **Theoretical Framework**: Introduces the Information Bottleneck (IB) principle into dataset distillation, leveraging the Conditional Entropy Bottleneck (CEB) to incorporate adversarial robustness as a prior.
@@ -35,11 +34,14 @@ We evaluate and compare the adversarial robustness of ROME and other DD methods 
 
 
 <p align="center">
-  <img src="Fig/result_white_box.png" width="100%" class="center" alt="Result"/><figcaption><strong>Table 1:</strong> Comparison of adversarial robustness for mdoels trained on diverse DD methods under white-box attacks.</figcaption>
+  <img src="Fig/result_white_box.png" width="100%" class="center" alt="Result"/>
+  <figcaption>
+    <strong>Table 1:</strong> Comparison of model robustness when trained using various DD methods with IPC settings of {1, 10, 50}, against both white-box targeted and untargeted attacks on the CIFAR-10 and CIFAR-100 datasets. RR represents the robustness ratio, and I-RR denotes the improved robustness ratio. The best results between the baseline and proposed methods are highlighted in <strong>bold</strong>, while the second-best results are <u>underlined</u>. Improvements in metrics compared to the second-best results are highlighted in <span style="color:red">red</span>.
+  </figcaption>
 </p>
 
 <p align="center">
-  <img src="Fig/result_black_box.png" width="100%" class="center" alt="Result"/><figcaption><strong>Figure 3:</strong> Comparison of adversarial robustness for mdoels trained on diverse DD methods under black-box attacks.</figcaption>
+  <img src="Fig/result_black_box.png" width="100%" class="center" alt="Result"/><figcaption><strong>Figure 3:</strong> Robustness heatmap of models trained on distilled CIFAR-10 datasets with IPC-50 settings under targeted and untargeted attacks. The vertical axis represents the attacked models, while the horizontal axis shows the models undergoing transfer attacks. The values in the heatmap denote the I-RR, with <strong>darker colors</strong> indicating <strong>higher I-RR values</strong>, which reflect <strong>better robustness</strong> against adversarial attacks.</figcaption>
 </p>
 
 ## 🛠 Getting Started
