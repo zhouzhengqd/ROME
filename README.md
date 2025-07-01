@@ -115,15 +115,15 @@ Follow the BEARD benchmark configuration:
 
 We would like to thank the contributors of the following projects that inspired and supported this work: [DC](https://github.com/VICO-UoE/DatasetCondensation), [DSA](https://github.com/VICO-UoE/DatasetCondensation), [DM](https://github.com/VICO-UoE/DatasetCondensation), [MTT](https://github.com/GeorgeCazenavette/mtt-distillation), [IDM](https://github.com/uitrbn/IDM), [BACON](https://github.com/zhouzhengqd/BACON), and [BEARD](https://github.com/zhouzhengqd/BEARD).
 
-<!-- ## Citation
+## Citation
 ```
-@article{zhou2024rome,
+@inproceedings{zhou2025rome,
   title={ROME is Forged in Adversity: Robust Distilled Datasets via Information Bottleneck},
-  author={},
-  journal={},
-  year={2024}
+  author = {Zhou, Zheng and Feng, Wenquan and Zhang, Qiaosheng and Lyu, Shuchang and Zhao, Qi and Cheng, Guangliang},
+  booktitle={International Conference on Machine Learning (ICML)},
+  year={2025}
 }
 ```
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=zhouzhengqd/ROME.git&type=Date)](https://star-history.com/#zhouzhengqd/ROME.git&Date) -->
+[![Star History Chart](https://api.star-history.com/svg?repos=zhouzhengqd/ROME.git&type=Date)](https://star-history.com/#zhouzhengqd/ROME.git&Date)
